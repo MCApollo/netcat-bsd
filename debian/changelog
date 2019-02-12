@@ -1,0 +1,241 @@
+netcat-openbsd (1.195-1) unstable; urgency=medium
+
+  * New upstream release (from OpenBSD 6.4)
+  * debian/control: Bump Standards-Version to 4.2.1 (no changes necessary).
+  * debian/patches:
+    + Move broadcast support out of misc-failures-and-features.patch into
+      an individual patch.
+    + Fix arbitrary port list support (Closes: #886910, regression since
+      1.178-1) and move it into an individual patch.  Furthermore, add range
+      support as well as shuffling in said list, and document these features.
+      (Closes: #886909).
+
+ -- Guilhem Moulin <guilhem@debian.org>  Mon, 22 Oct 2018 05:18:54 +0200
+
+netcat-openbsd (1.190-2) unstable; urgency=low
+
+  * d/patches/misc-failures-and-features.patch: Refactor option/argument
+    verification logic and re-enable usage of '-s' (local source address) and
+    '-p' (local source port) in client mode (when '-l' is unset).  Regression
+    introduced in version 1.187-1 of that file.  Closes: #897020, LP: #1767283.
+  * debian/control: Bump Standards-Version to 4.1.4 (no changes necessary).
+
+ -- Guilhem Moulin <guilhem@debian.org>  Mon, 30 Apr 2018 19:53:34 +0200
+
+netcat-openbsd (1.190-1) unstable; urgency=low
+
+  * New upstream release (from OpenBSD 6.3)
+  * debian/control:
+    + Bump Standards-Version to 4.1.3 (no changes necessary).
+    + Migrate Vcs-Browser and Vcs-Git from Alioth to Salsa.
+
+ -- Guilhem Moulin <guilhem@debian.org>  Thu, 05 Apr 2018 03:04:00 +0200
+
+netcat-openbsd (1.187-1) unstable; urgency=low
+
+  * New upstream release (from OpenBSD 6.2)
+  * debian/control: Bump Standards-Version to 4.1.1 (no changes necessary).
+  * debian/patches/send-crlf.patch: clarify in the manpage that the "-C" flag
+    (translate LF to CR+LF) only affects input data, and that LF characters
+    that are already preceded with CR are not translated.  Closes: #861062.
+  * Allow usage of -s with -l for consistency with netcat-traditional.  `nc -l
+    -p 12345 -s ::1` now behave as `nc -l -p 12345 ::1` and `nc -l ::1 12345`.
+    Closes: #879853.
+
+ -- Guilhem Moulin <guilhem@debian.org>  Sun, 03 Dec 2017 23:01:07 +0100
+
+netcat-openbsd (1.178-3) unstable; urgency=low
+
+  * Fix FTBFS on hurd-i386.
+  * Fix verbose mode with UDP (-uv).  Thanks to Akos Pasztory for the report
+    and patch.  Closes: #870240.
+
+ -- Guilhem Moulin <guilhem@debian.org>  Mon, 31 Jul 2017 18:54:10 +0200
+
+netcat-openbsd (1.178-2) unstable; urgency=medium
+
+  * debian/control: Bump Standards-Version to 4.0.0 (no changes necessary).
+  * debian/rules: Avoid parsing dpkg-parsechangelog(1) output.
+  * Fix FTBFS on kFreeBSD.
+
+ -- Guilhem Moulin <guilhem@debian.org>  Tue, 27 Jun 2017 19:01:55 +0200
+
+netcat-openbsd (1.178-1) unstable; urgency=medium
+
+  * New upstream release (compiled without TLS support).
+  * debian/copyright: Fix license for atomicio.[ch] and socks.c (2-clause vs
+    3-clause BSD). Closes: #860459.
+  * debian/README.source: new file showing how to import new upstream
+    releases.
+  * set TCP MD5SIG correctly for client connections.  Thanks to Thomas Habets
+    for the patch.
+
+ -- Guilhem Moulin <guilhem@debian.org>  Sat, 17 Jun 2017 12:45:15 +0200
+
+netcat-openbsd (1.130-3) unstable; urgency=medium
+
+  * Change defaults from "-q0" to "-q-1" to match upstream defaults since the
+    introduction of flag "-N" in version 1.110.  Passing a non-negative value
+    to "-q" now implies "-N"; in particular, "-q0" is now a mere alias for
+    "-N". (Closes: #854292)
+
+ -- Guilhem Moulin <guilhem@guilhem.org>  Fri, 03 Mar 2017 20:32:55 +0100
+
+netcat-openbsd (1.130-2) unstable; urgency=medium
+
+  * Fix handling of delayed exit option (Closes: #849192, LP: #1656785)
+    Thanks to Stefan Bader!
+
+ -- Aron Xu <aron@debian.org>  Thu, 26 Jan 2017 16:51:13 +0800
+
+netcat-openbsd (1.130-1) unstable; urgency=low
+
+  [ Aron Xu ]
+  * Fix cross build, thanks Colin Watson. (Closes: #694844)
+
+  [ Guilhem Moulin ]
+  * Add self to Uploaders.
+  * New upstream release. (Closes: #682444, #751105, #752931, #817050)
+  * Ensure each line ends with CRLF when -C is set, not just the last line
+    from the read buffer.  (Closes: #705223, #711784)
+  * Pause after each line when -i is set, not just after the last line from
+    the read buffer.
+  * debian/control:
+    + Bump Standards-Version to 3.9.8 (no changes necessary).
+    + Upgrade Vcs-Git URI from git:// to https://.
+    + Upgrade Vcs-Browser URI from http:// to https:// and switch to the
+      canonical cgit URI.
+  * debian/compat: Bump debhelper compatibility version to 9.
+  * debian/rules: Set DEB_BUILD_MAINT_OPTIONS to compile and link ELF
+    executables with hardening options enabled.
+  * debian/copyright:
+    + Add missing entries for nc.1 and Makefile.
+    + Replace the format URI http://dep.debian.net/deps/dep5/ by a versioned
+      one https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/ .
+  * debian/patches/0001-port-to-linux-with-libsd.patch: Don't truncate to
+    "Proxy-Authorization" header to 7 bytes.  Thanks to Petros Angelatos for
+    the patch.  (Closes: #792454)
+  * debian/patches/0010-misc-failures-and-features.patch: fix broadcast
+    support (SO_BROADCAST is a socket-level option not a TCP socket option).
+    Thanks to Jakob Wrigley for the patch.  (Closes: #702204)
+
+ -- Guilhem Moulin <guilhem@guilhem.org>  Fri, 11 Nov 2016 02:28:22 +0100
+
+netcat-openbsd (1.105-7) unstable; urgency=low
+
+  * Make UNIX dgram sockets work (Closes: #676997).
+
+ -- Aron Xu <aron@debian.org>  Wed, 13 Jun 2012 09:01:43 +0800
+
+netcat-openbsd (1.105-6) unstable; urgency=low
+
+  * Fix segfaults when using -Ulv (Closes: #668558).
+  * Do not continue to listen on port after accepting connection.
+
+ -- Aron Xu <aron@debian.org>  Thu, 03 May 2012 07:38:59 +0800
+
+netcat-openbsd (1.105-5) unstable; urgency=low
+
+  * Add $LDFLAGS from environment (Closes: #665321). 
+
+ -- Aron Xu <aron@debian.org>  Mon, 26 Mar 2012 01:37:16 +0800
+
+netcat-openbsd (1.105-4) unstable; urgency=high
+
+  * High urgency for fixing RC bug.
+  * Fix readwrite() behaviour (Closes: #662741).
+
+ -- Aron Xu <aron@debian.org>  Tue, 06 Mar 2012 15:18:26 +0800
+
+netcat-openbsd (1.105-3) unstable; urgency=low
+
+  * Clear up symlink of man page.
+  * Use Breaks instead of Conflicts.
+  * Fix minor warnings from man.
+
+ -- Aron Xu <aron@debian.org>  Sun, 19 Feb 2012 14:28:46 +0800
+
+netcat-openbsd (1.105-2) unstable; urgency=low
+
+  * Add missing Build-Depends: pkg-config.
+
+ -- Aron Xu <aron@debian.org>  Sun, 19 Feb 2012 03:59:37 +0800
+
+netcat-openbsd (1.105-1) unstable; urgency=low
+
+  * New upstream CVS snapshot, new maintainer.
+    - Verbose message to strerr (Closes: #570765).
+    - Can use packet's content > 1024 (Closes: #607003).
+    - Replace non-portable echo with printf (Closes: #510372).
+  * debian/patches:
+    - Rearrange existing patches, fix new porting issues.
+    - Option -l and -p are now compatible (Closes: #540073).
+    - Use libbsd instead of glib for strlcpy (Closes: #550611).
+    - Fix build with -Wl,--as-needed (Closes: #604781).
+    - Handling multiple clients subsquently when -k (Closes: #514792).
+    - Replace inet_ntoa with inet_ntop to support IPv6
+      (Closes: #512992).
+    - Modify -q behavior to be compatible with nc.traditional
+      (Closes: #508722, #594614, #606925, #611964).
+    - DCCP and broadcast support.
+    - Arbitrary port list to scan.
+    - Fix misc connection failures
+      (Closes: #579485, #579486, #579487, #579488, #633948).
+    - Improve verbose information and documentations.
+  * debian/rules:
+    - Link nc.openbsd.1 from nc.1 (Closes: #535951).
+    - Enable optional hardening build flags.
+  * debian/control:
+    - Replace glib with libbsd.
+    - Update to use debhelper 8, std-ver 3.9.2.
+    - Priority: important, to make it into base system.
+    - Add Vcs-*.
+  * debian/compat:
+    - Update to 8 from 4.
+
+ -- Aron Xu <aron@debian.org>  Wed, 15 Feb 2012 01:39:04 +0800
+
+netcat-openbsd (1.89-4) unstable; urgency=low
+
+  * Quit immediately after EOF if -q is not given (i.e. make the default
+    equivalent to -q 0). This is the standard upstream behavior and what
+    other Linux distributions use. It is different from netcat-traditional,
+    but compatibility with other versions of OpenBSD netcat is more
+    important. (Closes: #502188)
+
+ -- Decklin Foster <decklin@red-bean.com>  Sun, 18 Apr 2010 20:05:08 -0400
+
+netcat-openbsd (1.89-3) unstable; urgency=low
+
+  * Silence -z flag, for compatibility with netcat-traditional (Closes:
+    #464564)
+  * Move stray line in socks.c to quilt patch series (Closes: #485160)
+  * Add missing documentation for -q option to man page.
+
+ -- Decklin Foster <decklin@red-bean.com>  Thu, 19 Jun 2008 16:20:01 -0400
+
+netcat-openbsd (1.89-2) unstable; urgency=low
+
+  * Replace references to "netcat-base" with "netcat-traditional" (future
+    name of the old netcat package).
+
+ -- Decklin Foster <decklin@red-bean.com>  Wed, 30 Jan 2008 18:24:46 -0500
+
+netcat-openbsd (1.89-1) unstable; urgency=low
+
+  * Initial release. (Closes: #145798)
+  * Includes support for:
+    - IPv6 (Closes: #461317)
+    - Unix domain sockets (Closes: #348564)
+    - SOCKS (Closes: #142898)
+  * Conflict with netcat versions older than netcat-traditional, so that we
+    can use alternatives.
+  * Port some features over from netcat-traditional:
+    - Exit successfully when printing help text (-h), and include the Debian
+      revision.
+    - Add the -q (quit on standard input EOF) flag.
+    - Add support for specifying ports by name (/etc/services). Unlike the
+      old hack for this, nc will first try to find a named service, then fall
+      back to numeric parsing, so no escaping is needed.
+
+ -- Decklin Foster <decklin@red-bean.com>  Mon, 21 Jan 2008 18:41:37 -0500
